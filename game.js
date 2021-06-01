@@ -26,7 +26,6 @@ class Space
 	}
 }
 
-===== 29
 class Rocket
 {
   constructor(image, x, y, isPlayer, collectable, hitt)
@@ -92,7 +91,7 @@ class Rocket
       }
     }
 
-    else //Moving on y
+    else 
     {
       this.y += d;
 
@@ -117,30 +116,29 @@ let timer = null;
 
 
 
-let canvas = document.getElementById("canvas"); //Getting the canvas from DOM
-let ctx = canvas.getContext("2d"); //Getting the context to work with the canvas
+let canvas = document.getElementById("canvas");
+let ctx = canvas.getContext("2d"); 
 
-let scale = 0.1; //rockets scale
+let scale = 0.1; 
 
-Resize(); //Changing the canvas size on startup
+Resize(); 
 
-window.addEventListener("resize", Resize); //Change the canvas size with the window size
+window.addEventListener("resize", Resize); 
 
-//Forbidding openning the context menu to make the game play better on mobile devices
+
 canvas.addEventListener("contextmenu", function (e) { e.preventDefault(); return false; }); 
 
-window.addEventListener("keydown", function (e) { KeyDown(e); }); //Listenning for keyboard events
+window.addEventListener("keydown", function (e) { KeyDown(e); }); 
 
-let objects = []; //Game objects
+let objects = []; 
 
 let spaces = 
 [
   new Space("images/space.png", 0),
   new Space("images/space.png", canvas.width)
-]; //Backgrounds
+]; 
 
-let player = new Rocket("images/rocket.png", canvas.width /2, canvas.height /2, true, false, true); //Player's object
-
+let player = new Rocket("images/rocket.png", canvas.width /2, canvas.height /2, true, false, true); 
 
 let speed = 5;
 
@@ -150,14 +148,14 @@ function Start()
 {
 	if(!player.dead)
 	{
-		timer = setInterval(Update, UPDATE_TIME); //Updating the game 60 times a second
+		timer = setInterval(Update, UPDATE_TIME); 
 	}
 	
 }
 
 function Stop()
 {
-	clearInterval(timer); //Game stop
+	clearInterval(timer); 
 	timer = null;
 }
 
@@ -165,7 +163,7 @@ function Update()
 {
 	spaces[0].Update(spaces[1]);
 	spaces[1].Update(spaces[0]);
-	if(RandomInteger(0, 10000) > 9700) //Generating new rocket
+	if(RandomInteger(0, 10000) > 9700) 
 	{
 		objects.push(new Rocket("images/meteorite.png", RandomInteger(30, canvas.width - 50), RandomInteger(250, 400) * -1, false, false, true ));
 		objects.push(new Rocket("images/coins.png", RandomInteger(30, canvas.width - 50), RandomInteger(250, 400) * -1, false, true, false ));
@@ -220,20 +218,20 @@ function Update()
 	Draw();
 }
 let counter = 0;
-==== 106
-function Draw() //Working with graphics
+
+function Draw() 
 {
-  ctx.clearRect(0, 0, canvas.width, canvas.height); //Clearing the canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height); 
 
   for(let i = 0; i < spaces.length; i++)
   {
     ctx.drawImage
     (
-      spaces[i].image, //Image
-      0, //First X on image
-      0, //First Y on image
-      spaces[i].image.width, //End X on image
-      spaces[i].image.height, //End Y on image
+      spaces[i].image, 
+      0, 
+      0, 
+      spaces[i].image.width,
+      spaces[i].image.height, 
       spaces[i].x, 
       spaces[i].y, 
       canvas.width, 
