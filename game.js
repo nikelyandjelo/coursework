@@ -74,7 +74,7 @@ class Rocket
   }
   Move(v, d) 
   {
-    if(v == "x") //Moving on x
+    if(v == "x") 
     {
       d *= 2;
 
@@ -267,15 +267,15 @@ function KeyDown(e)
 {
   switch(e.keyCode)
   {
-    case 37: //Left
+    case 37: 
       player.Move("x", -speed);
       break;
 
-    case 39: //Right
+    case 39: 
       player.Move("x", speed);
       break;
 
-    case 38: //Up
+    case 38: 
       player.Move("y", -speed);
       break;
 
