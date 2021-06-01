@@ -1,3 +1,33 @@
+class Space
+{
+	constructor(image, y)
+	{
+		this.x = 0;
+		this.y = y;
+		this.loaded = false;
+
+		this.image = new Image();
+		
+		let obj = this;
+
+		this.image.addEventListener("load", function () { obj.loaded = true; });
+
+		this.image.src = image;
+	}
+
+	Update(space) 
+	{
+		this.y += speed;
+
+		if(this.y > window.innerHeight) 
+		{
+			this.y = space.y - canvas.width + speed; 
+		}
+	}
+}
+
+====
+
 =====
 function Start()
 {
