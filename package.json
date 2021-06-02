@@ -1,0 +1,14 @@
+{
+  "name": "game.js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Shukhman Veronica,Andriy Litvin",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^7.27.0"
+  }
+}
