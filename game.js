@@ -1,35 +1,23 @@
-class Space
-{
-  constructor(image, y)
-  {
+class Space {
+  constructor(image, y) {
     this.x = 0;
     this.y = y;
     this.loaded = false;
-
     this.image = new Image();
-    
     let obj = this;
-
     this.image.addEventListener("load", function () { obj.loaded = true; });
-
     this.image.src = image;
   }
-
-  Update(space) 
-  {
+  Update(space) {
     this.y += speed; 
-
-    if(this.y > window.innerHeight) 
-    {
+    if(this.y > window.innerHeight) {
       this.y = space.y - canvas.width + speed; 
     }
   }
 }
 
-class Rocket
-{
-  constructor(image, x, y, isPlayer, collectable, hitt)
-  {
+class Rocket{
+  constructor(image, x, y, isPlayer, collectable, hitt) {
     this.x = x;
     this.y = y;
     this.loaded = false;
@@ -38,170 +26,104 @@ class Rocket
     this.collectable = collectable;
     this.hitt = hitt;
     this.image = new Image();
-
     let obj = this;
-
     this.image.addEventListener("load", function () { obj.loaded = true; });
-
     this.image.src = image;
   }
 
-  Update()
-  {
-    if(!this.isPlayer)
-    {
+  Update() {
+    if(!this.isPlayer) {
       this.y += speed;
     }
-
-    if(this.y > canvas.height + 50)
-    {
+    if(this.y > canvas.height + 50) {
       this.dead = true;
     }
   }
 
-  Collide(rocket)
-  {
+  Collide(rocket) {
     let hit = false;
-    if(this.y < rocket.y + rocket.image.height * scale && this.y + this.image.height * scale > rocket.y) 
-    {
-      if(this.x + this.image.width * scale > rocket.x && this.x < rocket.x + rocket.image.width * scale) 
-      {
+    if(this.y < rocket.y + rocket.image.height * scale && this.y + this.image.height * scale > rocket.y) {
+      if(this.x + this.image.width * scale > rocket.x && this.x < rocket.x + rocket.image.width * scale) {
         hit = true;
       }
     }
 
     return hit;
   }
-  Move(v, d) 
-  {
-    if(v == "x") 
-    {
+  Move(v, d)  {
+    if(v == "x")  {
       d *= 2;
-
       this.x += d; 
-
-      if(this.x + this.image.width * scale > canvas.width)
-      {
+      if(this.x + this.image.width * scale > canvas.width) {
         this.x -= d; 
       }
-  
-      if(this.x < 0)
-      {
+      if(this.x < 0) {
         this.x = 0;
       }
     }
-
-    else 
-    {
+     else  {
       this.y += d;
-
-      if(this.y + this.image.height * scale > canvas.height)
-      {
+       if(this.y + this.image.height * scale > canvas.height) {
         this.y -= d;
       }
-
-      if(this.y < 0)
-      {
+       if(this.y < 0) {
         this.y = 0;
       }
     }
-    
   }
 }
-
-
 const UPDATE_TIME = 1000 / 60;
-
 let timer = null;
-
-
-
 let canvas = document.getElementById("canvas"); 
 let ctx = canvas.getContext("2d"); 
-
 let scale = 0.1; 
-
 Resize(); 
-
 window.addEventListener("resize", Resize); 
-
-
 canvas.addEventListener("contextmenu", function (e) { e.preventDefault(); return false; }); 
-
 window.addEventListener("keydown", function (e) { KeyDown(e); }); 
-
 let objects = []; 
-
-let spaces = 
-[
+let spaces = [
   new Space("images/space.png", 0),
   new Space("images/space.png", canvas.width)
 ]; 
-
 let player = new Rocket("images/rocket.png", canvas.width /2, canvas.height /2, true, false, true); 
-
-
 let speed = 5;
-
 Start();
-
-
-function Start()
-{
-  if(!player.dead)
-  {
+function Start() {
+  if(!player.dead) {
     timer = setInterval(Update, UPDATE_TIME); 
   }
-  
 }
-
-function Stop()
-{
+function Stop() {
   clearInterval(timer); 
   timer = null;
 }
-
-function Update() 
-{
+function Update() {
   spaces[0].Update(spaces[1]);
   spaces[1].Update(spaces[0]);
-  if(RandomInteger(0, 10000) > 9700) 
-  {
+  if(RandomInteger(0, 10000) > 9700) {
     objects.push(new Rocket("images/meteorite.png", RandomInteger(30, canvas.width - 50), RandomInteger(250, 400) * -1, false, false, true ));
     objects.push(new Rocket("images/coins.png", RandomInteger(30, canvas.width - 50), RandomInteger(250, 400) * -1, false, true, false ));
   }
-
   player.Update();
-
-  if(player.dead)
-  {
+  if(player.dead) {
     alert("Вы врезались!!!");
     Stop();
   }
-
-  let isDead = false; 
-
-  for(let i = 0; i < objects.length; i++)
-  {
+ let isDead = false; 
+ for(let i = 0; i < objects.length; i++) {
     objects[i].Update();
-
-    if(objects[i].dead)
-    {
+    if(objects[i].dead) {
       isDead = true;
     }
   }
-
-  if(isDead)
-  {
+  if(isDead) {
     objects.shift();
   }
-
   let hit = false;
-  for(let i = 0; i < objects.length; i++)
-  {
+  for(let i = 0; i < objects.length; i++) {
     hit = player.Collide(objects[i]);
-    if(hit && objects[i].hitt)
-    {
+    if(hit && objects[i].hitt) {
       alert("Вы врезались!!! \n\Ваш счет: " + counter);
       Stop();
       player.dead = true;
@@ -212,21 +134,17 @@ function Update()
       objects.splice(i, 1);
       counter+=1;
       console.log(counter);
-      
-    }
+       }
   }
 
   Draw();
 }
 let counter = 0;
-function Draw() 
-{
+function Draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height); 
 
-  for(let i = 0; i < spaces.length; i++)
-  {
-    ctx.drawImage
-    (
+  for(let i = 0; i < spaces.length; i++) {
+    ctx.drawImage (
       spaces[i].image, 
       0,
       0, 
@@ -241,16 +159,12 @@ function Draw()
 
   DrawRocket(player);
 
-  for(let i = 0; i < objects.length; i++)
-  {
+  for(let i = 0; i < objects.length; i++) {
     DrawRocket(objects[i]);
   }
 }
-
-function DrawRocket(rocket)
-{
-  ctx.drawImage
-  (
+function DrawRocket(rocket) {
+  ctx.drawImage (
     rocket.image, 
     0, 
     0, 
@@ -263,10 +177,8 @@ function DrawRocket(rocket)
   );
 }
 
-function KeyDown(e)
-{
-  switch(e.keyCode)
-  {
+function KeyDown(e) {
+  switch(e.keyCode) {
     case 37:
       player.Move("x", -speed);
       break;
@@ -284,26 +196,22 @@ function KeyDown(e)
       break;
 
     case 27: 
-      if(timer == null)
-      {
+      if(timer == null) {
         Start();
       }
-      else
-      {
+      else {
         Stop();
       }
       break;
   }
 }
 
-function Resize()
-{
+function Resize() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 }
 
-function RandomInteger(min, max) 
-{
+function RandomInteger(min, max) {
   let rand = min - 0.5 + Math.random() * (max - min + 1);
   return Math.round(rand);
 }
